@@ -79,14 +79,22 @@ class UploadingCopiesTest(TestCase):
         self.assertTrue(len(content[2][0]) == 2 and len(content[2][1]) == 2)
 
     def test_pt_to_px(self):
-
         self.assertEqual(pt_to_px(150, 500), 1041) #X
         self.assertEqual(pt_to_px(150, 500, 1), 713) #Y
         self.assertEqual(pt_to_px(200, 500), 1388) #X
         self.assertEqual(pt_to_px(200, 500, 1), 950) #Y
-
         self.assertEqual(pt_to_px(50, 500), 347) #X
-        self.assertEqual(pt_to_px(50, 500, 1), 237) #Y
+        self.assertEqual(pt_to_px(50, 500, 1), 237)
+
+    def test_px_to_pt(self):
+        self.assertEqual(px_to_pt(150, 500), 240)  # X
+        self.assertEqual(px_to_pt(150, 500, 1), 602)  # Y
+        self.assertEqual(px_to_pt(200, 500), 180)  # X
+        self.assertEqual(px_to_pt(200, 500, 1), 662)  # Y
+        self.assertEqual(px_to_pt(50, 500), 720)  # X
+        self.assertEqual(px_to_pt(50, 500, 1), 122)  # Y
+
+
 
 
 class ScanTestCase(StaticLiveServerTestCase):
@@ -213,11 +221,6 @@ class ScanTestCase(StaticLiveServerTestCase):
         time.sleep(2)
         #Delete the test
         selenium.find_element_by_class_name('btn-danger').click()
-
-
-
-
-
 
 
 
