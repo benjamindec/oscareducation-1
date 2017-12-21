@@ -30,6 +30,23 @@ from django.http import JsonResponse
 
 @user_is_professor
 def lesson_test_from_scan_match(request, lesson_pk, pk):
+    """
+
+    This function allows a teacher to match student with their own tests, and adding the changes on the database.
+
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """    
+    
     is_exist = TestAnswerFromScan.objects.filter(test_id=pk).count()
 
     if is_exist == 0:
@@ -73,6 +90,22 @@ def lesson_test_from_scan_match(request, lesson_pk, pk):
 
 @user_is_professor
 def lesson_test_from_scan_add(request, pk):
+    """
+
+    This function allows a teacher to create a new test. 
+    If the professor don't import its own template of test, the function will generate a PDF corresponding to the test.
+
+
+    :param request: its the request the user does on the website
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
+    
     lesson = get_object_or_404(Lesson, pk=pk)
 
     if request.method == "POST":
@@ -150,6 +183,23 @@ def lesson_test_from_scan_add(request, pk):
 
 @user_is_professor
 def lesson_test_from_scan_correct_one(request, lesson_pk, test_pk, pk):
+    """    
+    This function allows a teacher to correct a specific question of a selected test.
+
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param test_pk: the primary key of the test
+    :param pk: the primary key of the student
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type test_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
     is_exist = TestAnswerFromScan.objects.filter(id__isnull=False).count()
     nb_not_match = TestAnswerFromScan.objects.filter(student_id__isnull=True).count()
     """if nb_not_match > 0 or is_exist == 0:
@@ -189,6 +239,21 @@ def lesson_test_from_scan_correct_one(request, lesson_pk, test_pk, pk):
 
 @user_is_professor
 def lesson_test_from_scan_download(request, lesson_pk, pk):
+    """
+
+    This function allows a teacher to download a specific test.
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.HttpResponse with the corresponding test
+    :rtype: Django.HttpResponse
+
+    .. note:: Only allowed for professor
+    """
 
     test = get_object_or_404(BaseTest, pk=pk)
     t = get_object_or_404(TestFromScan, pk=pk)
@@ -205,6 +270,24 @@ def lesson_test_from_scan_download(request, lesson_pk, pk):
 
 @user_is_professor
 def lesson_test_from_scan_correct_by_student(request, lesson_pk, test_pk, pk):
+    """    
+    This function allows a teacher to correct a specific test of a selected student.
+    This function updates the database with the informations added by the professor.
+
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param test_pk: the primary key of the test
+    :param pk: the primary key of the student
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type test_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
 
     is_exist = TestAnswerFromScan.objects.filter(id__isnull=False, test_id=test_pk).count()
     nb_not_match = TestAnswerFromScan.objects.filter(student_id__isnull=True, test_id=test_pk).count()
@@ -272,10 +355,23 @@ def lesson_test_from_scan_correct_by_student(request, lesson_pk, test_pk, pk):
 
 
 
-
-
 @user_is_professor
 def lesson_test_from_scan_detail(request, lesson_pk, pk):
+    """    
+    This function allows a teacher to see all questions from all students.
+    This function allows a teacher to import scanned tests.
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
     is_exist = TestAnswerFromScan.objects.filter(test_id=pk).count()
     nb_not_match = TestAnswerFromScan.objects.filter(student_id__isnull=True,test_id=pk).count()
 
@@ -468,6 +564,20 @@ def lesson_test_from_scan_detail(request, lesson_pk, pk):
 
 @user_is_professor
 def lesson_test_from_scan_fill(request, lesson_pk, pk):
+    """    
+    This function allows a teacher to encode skills of students(mastered or not).
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
     lesson = get_object_or_404(Lesson, pk=lesson_pk)
     test_from_scan = get_object_or_404(TestFromScan, pk=pk)
 
@@ -546,6 +656,20 @@ def lesson_test_from_scan_fill(request, lesson_pk, pk):
 
 @user_is_professor
 def lesson_test_from_scan_import(request, lesson_pk, pk):
+    """    
+    This function allows a teacher to import its own template of a specific test.
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
 
     tmp = os.listdir(settings.STATIC_ROOT+"/tests/"+pk+"/")
 
@@ -609,6 +733,20 @@ def lesson_test_from_scan_import(request, lesson_pk, pk):
 
 @user_is_professor
 def lesson_next_page(request,pk):
+    """    
+    This function allows a teacher to crop answerboxes. When a professor validate a page, this function si called by a ajax request.
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
 
     request.session['page_test']+=1
 
@@ -634,6 +772,21 @@ def lesson_next_page(request,pk):
 
 @user_is_professor
 def lesson_validate_page(request,pk):
+    """    
+    This function is called when a professor has cropped a test completely.
+    The location of all answers boxes will be stored in the database to allow the cropping of the scanned tests.
+
+    :param request: its the request the user does on the website
+    :param lesson_pk: the primary key of the lesson
+    :param pk: the primary key of the test
+    :type request: Django.HttpRequest
+    :type lesson_pk: int
+    :type pk: int
+    :returns: return a Django.Template completed with the corresponding informations
+    :rtype: Django.Template
+
+    .. note:: Only allowed for professor
+    """
 
     username = request.GET.keys()
 

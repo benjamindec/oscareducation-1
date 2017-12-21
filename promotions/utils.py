@@ -54,6 +54,15 @@ def force_encoding(string):
 
 
 def insertion_sort_file(filelist):
+    """    
+    This function is used to sort the files a professor uploads on the website.
+
+    :param filelist: the list of file the function must sort
+    :type filelist: list(FileObject)
+    :returns: the sorted filelist
+    :rtype: list(FileObject)
+
+    """
     i=0
     j=0
     while i < len(filelist)-1:
@@ -69,6 +78,15 @@ def insertion_sort_file(filelist):
         i += 1
 
 def all_different(l):
+    """    
+    This function checks is they are not duplicated content.
+
+    :param l: the list of elements
+    :type l: list(Object)
+    :returns: the sorted list l
+    :rtype: list(Object)
+
+    """
     seen = set()
     for i in l:
         if i in seen:
@@ -81,9 +99,17 @@ PAGE_HEIGHT=defaultPageSize[1]; PAGE_WIDTH=defaultPageSize[0]
 styles = getSampleStyleSheet()
 Title = "Mon test"
 def generate_pdf(list,id):
+    """    
+    This function is used to generate a PDF of a specified test.
 
+    :param list: the list of questions for the test
+    :param id: the id of the test
+    :type l: list(Object)
+    :type id: int
+    :returns: the sorted list l
+    :rtype: list(Object)
 
-
+    """
 
     doc = SimpleDocTemplate(settings.STATIC_ROOT+"/tests/"+str(id)+"/"+str(id)+".pdf")
 
@@ -117,6 +143,12 @@ def generate_pdf(list,id):
 
 
 def stylesheet():
+    """    
+    This function is used to generate the stylesheet of a PDF.
+    :returns: the stylesheet of the PDF
+    :rtype: dict
+
+    """
     styles= {
         'default': ParagraphStyle(
             'default',
@@ -171,6 +203,14 @@ def stylesheet():
 
 
 def myFirstPage(canvas, doc):
+    """    
+    This function is used to generate the first page of a PDF for a specific test.
+
+    :param canvas: the template of the first page
+    :param doc: the content of the pdf
+    :type canvas: Object
+    :type doc: Object
+    """
 
     canvas.saveState()
     #url = pyqrcode.create(canvas.getPageNumber())
@@ -186,6 +226,14 @@ def myFirstPage(canvas, doc):
     canvas.restoreState()
 
 def myLaterPages(canvas, doc):
+    """    
+    This function is used to generate the others pages of a PDF for a specific test.
+
+    :param canvas: the template of the page
+    :param doc: the content of the pdf
+    :type canvas: Object
+    :type doc: Object
+    """
 
     canvas.saveState()
     canvas.setFont('Times-Roman',9)
@@ -197,6 +245,16 @@ def myLaterPages(canvas, doc):
     canvas.restoreState()
 
 def generate_coordinates(file,id):
+    """    
+    This function is used to generate the coordinates of the answer boxes of a PDF.
+
+    :param file: the name of the PDF
+    :param id: the ID of the test
+    :type file: String
+    :type id: int
+    :returns: the sorted list l
+    :rtype: list(Object)
+    """
     # Open a PDF file.
     fp = open(settings.STATIC_ROOT+"/tests/"+str(id)+"/"+file, 'rb')
     parser = PDFParser(fp)
@@ -230,6 +288,14 @@ def generate_coordinates(file,id):
 
 
 def parse_obj(lt_objs,content):
+    """    
+    This function is used to crop the answer boxes of a test from a PDF.
+
+    :param lt_obs: the list of coordinates
+    :param content: the content of the PDF
+    :type lt_obs: list
+    :type content: Object
+    """
 
     # loop over the object list
 
@@ -246,7 +312,18 @@ def parse_obj(lt_objs,content):
 
 
 def pt_to_px(dpi,coord,i=0):
+    """    
+    This function is used to transform Point into Pixel.
 
+    :param dpi: the DPI of the picture
+    :param coord: the coordinate in Point
+    :param i: boolean if horizontal = 0, vertical = 1
+    :type dpi: int
+    :type coord: int
+    :type i: int
+    :returns: the convertion of the coordinate into pixel
+    :rtype: int
+    """
 
     if i == 0:
         return ((int(coord)*dpi)/72)
@@ -255,6 +332,18 @@ def pt_to_px(dpi,coord,i=0):
 
 
 def px_to_pt(dpi,coord,i=0):
+    """    
+    This function is used to transform Pixel into Point.
+
+    :param dpi: the DPI of the picture
+    :param coord: the coordinate in Pixel
+    :param i: boolean if horizontal = 0, vertical = 1
+    :type dpi: int
+    :type coord: int
+    :type i: int
+    :returns: the convertion of the coordinate into Point
+    :rtype: int
+    """
 
     if i == 0:
         return((int(coord)*72)/dpi)
@@ -267,6 +356,16 @@ def px_to_pt(dpi,coord,i=0):
 
 
 def pdf2png(pdf_input_path, png_output_path):
+    """    
+    This function is used to transform PDF into PNG.
+
+    :param pdf_input_path: the PDF file
+    :param png_output_path: the PNG file
+    :type pdf_input_path: FileObject
+    :type png_output_path: FileObject
+    :returns: the convertion of the PDF into PNG
+    :rtype: FileObject
+    """
     args = ["pdf2png", # actual value doesn't matter
             "-dNOPAUSE",
             "-sDEVICE=png",
