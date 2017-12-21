@@ -286,7 +286,7 @@ def lesson_test_from_scan_detail(request, lesson_pk, pk):
     questions = TestQuestionFromScan.objects.all().filter(test_id=pk).order_by('question_num')
     students = TestAnswerFromScan.objects.all().filter(test_id=pk).distinct('student_id').order_by('student_id','-is_correct')
 
-    if (not 'sort_question' in request.session) or (request.session['sort_question'] is None or request.session['sort_question'] == -1) or request.session['sort_question'] > len(questions):
+    if (not 'sort_question' in request.session) or request.session['sort_question'] is None or request.session['sort_question'] == -1:
         request.session['sort_question'] = -1;
         answers = TestAnswerFromScan.objects.all().filter(test_id=pk).order_by('id')
     else:
